@@ -249,17 +249,28 @@ exportPdfBtn.addEventListener("click", () => {
     doc.text("Tableau des mesures", 15, y);
     y += 6;
     doc.setFont("helvetica", "normal");
-    doc.text(`Masse (${unitMasse}) / Poids (${unitPoids})`, 15, y);
+    doc.text(`Unites : masse en ${unitMasse}, poids en ${unitPoids}`, 15, y);
     y += 6;
-    const rows = m.map((mv, i) => `${i + 1}. ${mv} / ${p[i]}`);
-    rows.forEach((line) => {
+
+    // Header
+    doc.setFont("helvetica", "bold");
+    doc.text("#", 15, y);
+    doc.text(`Masse (${unitMasse})`, 30, y);
+    doc.text(`Poids (${unitPoids})`, 90, y);
+    doc.setFont("helvetica", "normal");
+    y += 6;
+
+    // Rows
+    for (let i = 0; i < m.length; i += 1) {
       if (y > 260) {
         doc.addPage();
         y = 20;
       }
-      doc.text(line, 15, y);
+      doc.text(String(i + 1), 15, y);
+      doc.text(String(m[i]), 30, y);
+      doc.text(String(p[i]), 90, y);
       y += 6;
-    });
+    }
 
     if (y > 240) {
       doc.addPage();

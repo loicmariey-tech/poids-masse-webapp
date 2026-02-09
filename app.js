@@ -26,6 +26,7 @@ const qCompare = document.getElementById("qCompare");
 const qPrecision = document.getElementById("qPrecision");
 const qConclusion = document.getElementById("qConclusion");
 const fullTableInput = document.getElementById("fullTable");
+const toggleHintsBtn = document.getElementById("toggleHints");
 
 function parseTableData() {
   const rows = Array.from(document.querySelectorAll(".measure-row"));
@@ -473,6 +474,13 @@ async function resetCache() {
 }
 
 resetCacheBtn.addEventListener("click", resetCache);
+
+let hintsVisible = true;
+toggleHintsBtn.addEventListener("click", () => {
+  hintsVisible = !hintsVisible;
+  document.body.classList.toggle("hints-hidden", !hintsVisible);
+  toggleHintsBtn.textContent = hintsVisible ? "Masquer les aides" : "Afficher les aides";
+});
 
 function applyUrlParams() {
   const params = new URLSearchParams(window.location.search);

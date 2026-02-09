@@ -83,6 +83,22 @@ body {
   color: #6d655a;
 }
 
+.secondary {
+  border: 2px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  padding: 6px 10px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.secondary:hover {
+  background: #efe7db;
+}
+
+.hints-hidden .hint {
+  display: none;
+}
 .grid input,
 .grid select {
   padding: 8px;

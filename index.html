@@ -73,6 +73,10 @@
               </select>
             </div>
             <button id="resetCache">Reinitialiser cache</button>
+            <label class="inline">
+              <input id="fullTable" type="checkbox" />
+              Tableau complet en annexe (3e page)
+            </label>
             <span id="status" aria-live="polite"></span>
           </div>
           <div class="results">
@@ -117,8 +121,16 @@
             <textarea id="qAlign" rows="3" placeholder="..."></textarea>
           </label>
           <label>
+            1bis. En maths, que signifie une droite qui passe par l'origine ?
+            <textarea id="qOrigin" rows="3" placeholder="..."></textarea>
+          </label>
+          <label>
             2. Compare la pente de la regression a 9.81 N/kg.
             <textarea id="qCompare" rows="3" placeholder="..."></textarea>
+          </label>
+          <label>
+            3. La precision des mesures est-elle suffisante ? Justifie.
+            <textarea id="qPrecision" rows="3" placeholder="..."></textarea>
           </label>
           <label>
             Conclusion (proportionnalite P = m*g ?)

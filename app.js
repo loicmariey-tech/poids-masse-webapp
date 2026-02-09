@@ -20,8 +20,11 @@ const printNom = document.getElementById("printNom");
 const printPrenom = document.getElementById("printPrenom");
 const printClasse = document.getElementById("printClasse");
 const qAlign = document.getElementById("qAlign");
+const qOrigin = document.getElementById("qOrigin");
 const qCompare = document.getElementById("qCompare");
+const qPrecision = document.getElementById("qPrecision");
 const qConclusion = document.getElementById("qConclusion");
+const fullTableInput = document.getElementById("fullTable");
 
 function parseTableData() {
   const rows = Array.from(document.querySelectorAll(".measure-row"));
@@ -295,10 +298,11 @@ exportPdfBtn.addEventListener("click", () => {
     doc.setTextColor(...dark);
     y += 6;
 
-    // Rows (limit to keep PDF <= 2 pages)
+    // Rows (limit to keep PDF <= 2 pages unless fullTable is checked)
     let truncated = false;
+    const limitY = fullTableInput.checked ? 260 : 220;
     for (let i = 0; i < m.length; i += 1) {
-      if (y > 220) {
+      if (y > limitY) {
         truncated = true;
         break;
       }
@@ -320,7 +324,11 @@ exportPdfBtn.addEventListener("click", () => {
     const clip = (text, max) => (text.length > max ? `${text.slice(0, max - 3)}...` : text);
     doc.text(`1. Alignement : ${clip(qAlign.value || "-", 90)}`, 15, y);
     y += 6;
+    doc.text(`1bis. Origine : ${clip(qOrigin.value || "-", 90)}`, 15, y);
+    y += 6;
     doc.text(`2. Comparaison : ${clip(qCompare.value || "-", 90)}`, 15, y);
+    y += 6;
+    doc.text(`3. Precision : ${clip(qPrecision.value || "-", 90)}`, 15, y);
     y += 6;
     doc.text(`Conclusion : ${clip(qConclusion.value || "-", 90)}`, 15, y);
     y += 10;
@@ -331,6 +339,31 @@ exportPdfBtn.addEventListener("click", () => {
     doc.text(".............................................................................", 15, y);
     y += 6;
     doc.text(".............................................................................", 15, y);
+
+    // Optional annex with full table
+    if (fullTableInput.checked && truncated) {
+      doc.addPage();
+      let ay = 20;
+      doc.setFont("helvetica", "bold");
+      doc.text("Annexe - Tableau complet", 15, ay);
+      ay += 6;
+      doc.setFont("helvetica", "normal");
+      doc.text(`Unites : masse en ${unitMasse}, poids en ${unitPoids}`, 15, ay);
+      ay += 8;
+      doc.setFont("helvetica", "bold");
+      doc.text("#", 15, ay);
+      doc.text(`Masse (${unitMasse})`, 30, ay);
+      doc.text(`Poids (${unitPoids})`, 90, ay);
+      doc.setFont("helvetica", "normal");
+      ay += 6;
+      for (let i = 0; i < m.length; i += 1) {
+        if (ay > 280) break;
+        doc.text(String(i + 1), 15, ay);
+        doc.text(String(m[i]), 30, ay);
+        doc.text(String(p[i]), 90, ay);
+        ay += 6;
+      }
+    }
 
     doc.save("poids-masse.pdf");
   } catch (err) {

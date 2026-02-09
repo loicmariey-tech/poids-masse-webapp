@@ -250,6 +250,13 @@ exportPdfBtn.addEventListener("click", () => {
     doc.setFontSize(11);
     doc.text("Objectif : verifier P = m * g et comparer la regression a la droite theorique.", 15, 100);
 
+    doc.setFont("helvetica", "bold");
+    doc.text("Sommaire", 15, 112);
+    doc.setFont("helvetica", "normal");
+    doc.text("1. Graphique et resultats .......................... p.2", 15, 120);
+    doc.text("2. Tableau des mesures .............................. p.2", 15, 126);
+    doc.text("3. Reponses et remarques ............................. p.2", 15, 132);
+
     doc.addPage();
 
     doc.setFont("helvetica", "normal");
@@ -288,31 +295,34 @@ exportPdfBtn.addEventListener("click", () => {
     doc.setTextColor(...dark);
     y += 6;
 
-    // Rows
+    // Rows (limit to keep PDF <= 2 pages)
+    let truncated = false;
     for (let i = 0; i < m.length; i += 1) {
-      if (y > 260) {
-        doc.addPage();
-        y = 20;
+      if (y > 220) {
+        truncated = true;
+        break;
       }
       doc.text(String(i + 1), 15, y);
       doc.text(String(m[i]), 30, y);
       doc.text(String(p[i]), 90, y);
       y += 6;
     }
-
-    if (y > 240) {
-      doc.addPage();
-      y = 20;
+    if (truncated) {
+      doc.setFont("helvetica", "italic");
+      doc.text(`... tableau tronque (${m.length} mesures au total)`, 15, y);
+      doc.setFont("helvetica", "normal");
+      y += 6;
     }
     doc.setFont("helvetica", "bold");
     doc.text("Reponses", 15, y);
     y += 6;
     doc.setFont("helvetica", "normal");
-    doc.text(`1. Alignement : ${qAlign.value || "-"}`, 15, y);
+    const clip = (text, max) => (text.length > max ? `${text.slice(0, max - 3)}...` : text);
+    doc.text(`1. Alignement : ${clip(qAlign.value || "-", 90)}`, 15, y);
     y += 6;
-    doc.text(`2. Comparaison : ${qCompare.value || "-"}`, 15, y);
+    doc.text(`2. Comparaison : ${clip(qCompare.value || "-", 90)}`, 15, y);
     y += 6;
-    doc.text(`Conclusion : ${qConclusion.value || "-"}`, 15, y);
+    doc.text(`Conclusion : ${clip(qConclusion.value || "-", 90)}`, 15, y);
     y += 10;
     doc.setFont("helvetica", "bold");
     doc.text("Remarques de l'enseignant", 15, y);

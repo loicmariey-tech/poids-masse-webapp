@@ -127,6 +127,14 @@ function drawAxes(xMin, xMax, yMin, yMax, margin) {
   ctx.restore();
 }
 
+function drawTitle() {
+  ctx.fillStyle = "#3e3a35";
+  ctx.font = "16px Georgia";
+  ctx.textAlign = "center";
+  ctx.fillText("Poids en fonction de la masse", canvas.width / 2, 24);
+  ctx.textAlign = "left";
+}
+
 function toCanvasX(value, xMin, xMax, margin) {
   return (
     margin +
@@ -190,6 +198,7 @@ function render() {
 
     const margin = 50;
     clearCanvas();
+    drawTitle();
     drawAxes(xMin, xMax, yMin, yMax, margin);
     drawLine(a, b, xMin, xMax, yMin, yMax, margin, "dashed", "#1f7a5d");
     drawLine(gTheorique, 0, xMin, xMax, yMin, yMax, margin, "dotted", "#2f5fb3");
@@ -218,12 +227,19 @@ exportPdfBtn.addEventListener("click", () => {
     }
 
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const primary = [31, 122, 93];
+    const dark = [44, 42, 40];
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
+    doc.setTextColor(...dark);
     doc.text("Compte-rendu eleve - Poids et masse (3e)", 15, 16);
+    doc.setDrawColor(...primary);
+    doc.setLineWidth(0.6);
+    doc.line(15, 19, 195, 19);
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
+    doc.setTextColor(...dark);
     doc.text(`Nom : ${nomInput.value || "__________"}`, 15, 26);
     doc.text(`Prenom : ${prenomInput.value || "__________"}`, 15, 32);
     doc.text(`Classe : ${classeInput.value || "__________"}`, 15, 38);
@@ -254,10 +270,12 @@ exportPdfBtn.addEventListener("click", () => {
 
     // Header
     doc.setFont("helvetica", "bold");
+    doc.setTextColor(...primary);
     doc.text("#", 15, y);
     doc.text(`Masse (${unitMasse})`, 30, y);
     doc.text(`Poids (${unitPoids})`, 90, y);
     doc.setFont("helvetica", "normal");
+    doc.setTextColor(...dark);
     y += 6;
 
     // Rows

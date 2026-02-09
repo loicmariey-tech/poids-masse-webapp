@@ -1,4 +1,3 @@
-const textarea = document.getElementById("data");
 const updateBtn = document.getElementById("update");
 const exportBtn = document.getElementById("export");
 const exportPdfBtn = document.getElementById("exportPdf");
@@ -11,25 +10,21 @@ const modeStudentBtn = document.getElementById("modeStudent");
 const modeTeacherBtn = document.getElementById("modeTeacher");
 const studentOnly = document.querySelector(".student-only");
 const teacherOnly = document.querySelector(".teacher-only");
+const nbMesuresInput = document.getElementById("nbMesures");
+const unitMasseSelect = document.getElementById("unitMasse");
+const unitPoidsSelect = document.getElementById("unitPoids");
+const tableWrapper = document.getElementById("tableWrapper");
 
-function parseData(text) {
-  const lines = text
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0);
-
+function parseTableData() {
+  const rows = Array.from(document.querySelectorAll(".measure-row"));
   const m = [];
   const p = [];
 
-  for (const line of lines) {
-    const parts = line.split(/[;,\s]+/).filter(Boolean);
-    if (parts.length < 2) {
-      throw new Error(`Ligne invalide: "${line}"`);
-    }
-    const mVal = Number(parts[0]);
-    const pVal = Number(parts[1]);
+  for (const row of rows) {
+    const mVal = Number(row.querySelector(".m-input").value);
+    const pVal = Number(row.querySelector(".p-input").value);
     if (!Number.isFinite(mVal) || !Number.isFinite(pVal)) {
-      throw new Error(`Valeurs non numeriques: "${line}"`);
+      throw new Error("Toutes les valeurs doivent etre numeriques.");
     }
     m.push(mVal);
     p.push(pVal);
@@ -128,25 +123,31 @@ function drawLine(a, b, xMin, xMax, yMin, yMax, margin, style, color) {
 function render() {
   statusEl.textContent = "";
   try {
-    const { m, p } = parseData(textarea.value);
-    const { a, b } = computeLinearRegression(m, p);
+    const { m, p } = parseTableData();
+    const unitMasse = unitMasseSelect.value;
+    const unitPoids = unitPoidsSelect.value;
+
+    const m_kg = m.map((val) => (unitMasse === "g" ? val / 1000 : val));
+    const p_N = p.map((val) => (unitPoids === "mN" ? val / 1000 : val));
+
+    const { a, b } = computeLinearRegression(m_kg, p_N);
     const gTheorique = 9.81;
     const relError = Math.abs(a - gTheorique) / gTheorique * 100;
 
     regLineEl.textContent = `P = ${a.toFixed(2)} m + ${b.toFixed(2)}`;
     relErrorEl.textContent = relError.toFixed(1);
 
-    const xMin = Math.min(0, ...m);
-    const xMax = Math.max(...m) * 1.1 || 1;
-    const yMin = Math.min(0, ...p);
-    const yMax = Math.max(...p) * 1.1 || 1;
+    const xMin = Math.min(0, ...m_kg);
+    const xMax = Math.max(...m_kg) * 1.1 || 1;
+    const yMin = Math.min(0, ...p_N);
+    const yMax = Math.max(...p_N) * 1.1 || 1;
 
     const margin = 50;
     clearCanvas();
     drawAxes(xMin, xMax, yMin, yMax, margin);
     drawLine(a, b, xMin, xMax, yMin, yMax, margin, "dashed", "#1f7a5d");
     drawLine(gTheorique, 0, xMin, xMax, yMin, yMax, margin, "dotted", "#2f5fb3");
-    drawPoints(m, p, xMin, xMax, yMin, yMax, margin);
+    drawPoints(m_kg, p_N, xMin, xMax, yMin, yMax, margin);
   } catch (err) {
     statusEl.textContent = err.message;
   }
@@ -183,3 +184,31 @@ function setMode(mode) {
 
 modeStudentBtn.addEventListener("click", () => setMode("student"));
 modeTeacherBtn.addEventListener("click", () => setMode("teacher"));
+
+function buildTable() {
+  const count = Math.max(2, Math.min(20, Number(nbMesuresInput.value || 2)));
+  const unitMasse = unitMasseSelect.value;
+  const unitPoids = unitPoidsSelect.value;
+
+  const rows = [];
+  rows.push(`<table class="measure-table">`);
+  rows.push(`<thead><tr><th>Mesure</th><th>Masse (${unitMasse})</th><th>Poids (${unitPoids})</th></tr></thead>`);
+  rows.push("<tbody>");
+  for (let i = 0; i < count; i += 1) {
+    rows.push(
+      `<tr class="measure-row">` +
+        `<td>${i + 1}</td>` +
+        `<td><input class="m-input" type="number" step="any" value="${i === 0 ? 0 : ""}"></td>` +
+        `<td><input class="p-input" type="number" step="any" value="${i === 0 ? 0 : ""}"></td>` +
+      `</tr>`
+    );
+  }
+  rows.push("</tbody></table>");
+  tableWrapper.innerHTML = rows.join("");
+}
+
+nbMesuresInput.addEventListener("change", buildTable);
+unitMasseSelect.addEventListener("change", buildTable);
+unitPoidsSelect.addEventListener("change", buildTable);
+
+buildTable();

@@ -25,16 +25,45 @@
 
       <section class="panel">
         <div class="inputs">
-          <h2>Donnees (m en kg, P en N)</h2>
-          <p>Une paire par ligne, format: <code>m,P</code></p>
-          <textarea id="data" rows="8">
-0,0
-0.100,1.0
-0.150,1.5
-0.180,2.0
-0.300,3.0
-0.350,3.5
-          </textarea>
+          <h2>Identification</h2>
+          <div class="grid">
+            <label>
+              Nom
+              <input id="nom" type="text" placeholder="Dupont" />
+            </label>
+            <label>
+              Prenom
+              <input id="prenom" type="text" placeholder="Lea" />
+            </label>
+            <label>
+              Classe
+              <input id="classe" type="text" placeholder="3e2" />
+            </label>
+          </div>
+
+          <h2>Mesures</h2>
+          <div class="grid">
+            <label>
+              Nombre de mesures
+              <input id="nbMesures" type="number" min="2" max="20" value="6" />
+            </label>
+            <label>
+              Unite de masse
+              <select id="unitMasse">
+                <option value="kg" selected>kg</option>
+                <option value="g">g</option>
+              </select>
+            </label>
+            <label>
+              Unite de poids
+              <select id="unitPoids">
+                <option value="N" selected>N</option>
+                <option value="mN">mN</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="tableWrapper"></div>
           <div class="actions">
             <button id="update">Mettre a jour</button>
             <button id="export">Exporter le graphe (PNG)</button>

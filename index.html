@@ -17,6 +17,10 @@
           Verifier la relation <strong>P = m x g</strong> et estimer la valeur de g a partir de
           mesures.
         </p>
+        <div class="mode-toggle" role="group" aria-label="Mode">
+          <button id="modeStudent" class="mode active">Mode eleve</button>
+          <button id="modeTeacher" class="mode">Mode prof</button>
+        </div>
       </header>
 
       <section class="panel">
@@ -34,6 +38,7 @@
           <div class="actions">
             <button id="update">Mettre a jour</button>
             <button id="export">Exporter le graphe (PNG)</button>
+            <button id="exportPdf">Exporter PDF</button>
             <span id="status" aria-live="polite"></span>
           </div>
           <div class="results">
@@ -52,12 +57,21 @@
         </div>
       </section>
 
-      <section class="panel info">
+      <section class="panel info student-only">
         <h2>Consigne eleve</h2>
         <ul>
           <li>Verifier que les unites sont correctes (kg et N).</li>
           <li>Observer l'alignement des points.</li>
-          <li>Comparer g mesure a 9.81 N/kg.</li>
+          <li>Comparer la pente a 9.81 N/kg.</li>
+        </ul>
+      </section>
+
+      <section class="panel info teacher-only hidden">
+        <h2>Mode prof</h2>
+        <ul>
+          <li>Attendus: regression lineaire, comparaison a 9.81 N/kg.</li>
+          <li>Expliquer le sens de la pente (g) et de l'ordonnee a l'origine (b).</li>
+          <li>Faire commenter l'ecart relatif sur la pente.</li>
         </ul>
       </section>
     </main>

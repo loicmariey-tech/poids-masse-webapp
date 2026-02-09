@@ -94,6 +94,59 @@ button:hover {
   background: #8a3a30;
 }
 
+#exportPdf {
+  background: #2f5fb3;
+}
+
+#exportPdf:hover {
+  background: #224585;
+}
+
+.mode-toggle {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mode {
+  border: 2px solid var(--ink);
+  background: #f0e6d8;
+  color: var(--ink);
+}
+
+.mode.active {
+  background: var(--ink);
+  color: #fff;
+}
+
+.hidden {
+  display: none;
+}
+
+@media print {
+  .mode-toggle,
+  .actions,
+  .legend,
+  #status {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .panel {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+
+  .hero {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+}
+
 .results {
   margin-top: 12px;
   display: grid;

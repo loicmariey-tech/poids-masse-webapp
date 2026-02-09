@@ -1,11 +1,16 @@
 const textarea = document.getElementById("data");
 const updateBtn = document.getElementById("update");
 const exportBtn = document.getElementById("export");
+const exportPdfBtn = document.getElementById("exportPdf");
 const statusEl = document.getElementById("status");
 const regLineEl = document.getElementById("regLine");
 const relErrorEl = document.getElementById("relError");
 const canvas = document.getElementById("chart");
 const ctx = canvas.getContext("2d");
+const modeStudentBtn = document.getElementById("modeStudent");
+const modeTeacherBtn = document.getElementById("modeTeacher");
+const studentOnly = document.querySelector(".student-only");
+const teacherOnly = document.querySelector(".teacher-only");
 
 function parseData(text) {
   const lines = text
@@ -157,3 +162,24 @@ exportBtn.addEventListener("click", () => {
   link.href = canvas.toDataURL("image/png");
   link.click();
 });
+
+exportPdfBtn.addEventListener("click", () => {
+  window.print();
+});
+
+function setMode(mode) {
+  if (mode === "teacher") {
+    modeTeacherBtn.classList.add("active");
+    modeStudentBtn.classList.remove("active");
+    teacherOnly.classList.remove("hidden");
+    studentOnly.classList.add("hidden");
+  } else {
+    modeStudentBtn.classList.add("active");
+    modeTeacherBtn.classList.remove("active");
+    studentOnly.classList.remove("hidden");
+    teacherOnly.classList.add("hidden");
+  }
+}
+
+modeStudentBtn.addEventListener("click", () => setMode("student"));
+modeTeacherBtn.addEventListener("click", () => setMode("teacher"));

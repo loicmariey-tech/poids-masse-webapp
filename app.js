@@ -230,38 +230,47 @@ exportPdfBtn.addEventListener("click", () => {
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
     const primary = [31, 122, 93];
     const dark = [44, 42, 40];
+    // Cover page
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
+    doc.setFontSize(20);
     doc.setTextColor(...dark);
-    doc.text("Compte-rendu eleve - Poids et masse (3e)", 15, 16);
+    doc.text("Compte-rendu eleve", 15, 40);
+    doc.setFontSize(14);
+    doc.text("Poids et masse (3e)", 15, 50);
     doc.setDrawColor(...primary);
-    doc.setLineWidth(0.6);
-    doc.line(15, 19, 195, 19);
+    doc.setLineWidth(0.8);
+    doc.line(15, 55, 195, 55);
 
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(11);
-    doc.setTextColor(...dark);
-    doc.text(`Nom : ${nomInput.value || "__________"}`, 15, 26);
-    doc.text(`Prenom : ${prenomInput.value || "__________"}`, 15, 32);
-    doc.text(`Classe : ${classeInput.value || "__________"}`, 15, 38);
+    doc.setFontSize(12);
+    doc.text(`Nom : ${nomInput.value || "__________"}`, 15, 70);
+    doc.text(`Prenom : ${prenomInput.value || "__________"}`, 15, 78);
+    doc.text(`Classe : ${classeInput.value || "__________"}`, 15, 86);
 
-    doc.text("Objectif : verifier P = m * g et comparer la regression a la droite theorique.", 15, 46);
+    doc.setFontSize(11);
+    doc.text("Objectif : verifier P = m * g et comparer la regression a la droite theorique.", 15, 100);
+
+    doc.addPage();
+
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(...dark);
+    doc.setFontSize(11);
 
     const imgData = canvas.toDataURL("image/png");
-    doc.addImage(imgData, "PNG", 15, 55, 180, 95);
+    doc.addImage(imgData, "PNG", 15, 20, 180, 95);
 
     doc.setFont("helvetica", "bold");
-    doc.text("Resultats", 15, 158);
+    doc.text("Resultats", 15, 120);
     doc.setFont("helvetica", "normal");
-    doc.text(`Regression : ${regLineEl.textContent}`, 15, 166);
-    doc.text("Droite theorique : P = 9.81 m", 15, 172);
-    doc.text(`Ecart relatif (pente) : ${relErrorEl.textContent} %`, 15, 178);
+    doc.text(`Regression : ${regLineEl.textContent}`, 15, 128);
+    doc.text("Droite theorique : P = 9.81 m", 15, 134);
+    doc.text(`Ecart relatif (pente) : ${relErrorEl.textContent} %`, 15, 140);
 
     // Table des mesures
     const { m, p } = parseTableData();
     const unitMasse = unitMasseSelect.value;
     const unitPoids = unitPoidsSelect.value;
-    let y = 186;
+    let y = 150;
     doc.setFont("helvetica", "bold");
     doc.text("Tableau des mesures", 15, y);
     y += 6;
@@ -304,6 +313,14 @@ exportPdfBtn.addEventListener("click", () => {
     doc.text(`2. Comparaison : ${qCompare.value || "-"}`, 15, y);
     y += 6;
     doc.text(`Conclusion : ${qConclusion.value || "-"}`, 15, y);
+    y += 10;
+    doc.setFont("helvetica", "bold");
+    doc.text("Remarques de l'enseignant", 15, y);
+    y += 6;
+    doc.setFont("helvetica", "normal");
+    doc.text(".............................................................................", 15, y);
+    y += 6;
+    doc.text(".............................................................................", 15, y);
 
     doc.save("poids-masse.pdf");
   } catch (err) {

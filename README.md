@@ -15,6 +15,18 @@ Webapp pedagogique pour tracer les points experimentaux, effectuer une regressio
 - Remplissage automatique d'un **jeu d'exemple** (10/15/20 mesures).
 - Mode PWA (installable sur smartphone).
 
+## Guides
+
+- Eleve : `GUIDE_ELEVE.md`
+- Prof : `GUIDE_PROF.md`
+
+## Captures d'ecran
+
+Ajoutees dans `assets/screens/`.
+
+- Eleve : `assets/screens/student.png`
+- Prof : `assets/screens/teacher.png`
+
 ## Lancer en local
 
 - Ouvrir `index.html` dans un navigateur.

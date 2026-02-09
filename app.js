@@ -71,15 +71,54 @@ function clearCanvas() {
 }
 
 function drawAxes(xMin, xMax, yMin, yMax, margin) {
-  ctx.strokeStyle = "#6d655a";
+  const axisColor = "#3e3a35";
+  const gridColor = "#d8cfc1";
+  const ticks = 5;
+
+  // Grid
+  ctx.strokeStyle = gridColor;
   ctx.lineWidth = 1;
+  for (let i = 1; i < ticks; i += 1) {
+    const x = margin + (i / ticks) * (canvas.width - 2 * margin);
+    const y = margin + (i / ticks) * (canvas.height - 2 * margin);
+    ctx.beginPath();
+    ctx.moveTo(x, margin);
+    ctx.lineTo(x, canvas.height - margin);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(margin, y);
+    ctx.lineTo(canvas.width - margin, y);
+    ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = axisColor;
+  ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(margin, canvas.height - margin);
   ctx.lineTo(canvas.width - margin, canvas.height - margin);
-  ctx.lineTo(canvas.width - margin, margin);
+  ctx.moveTo(margin, canvas.height - margin);
+  ctx.lineTo(margin, margin);
   ctx.stroke();
 
-  ctx.fillStyle = "#6d655a";
+  // Arrowheads
+  ctx.beginPath();
+  ctx.moveTo(canvas.width - margin, canvas.height - margin);
+  ctx.lineTo(canvas.width - margin - 10, canvas.height - margin - 5);
+  ctx.lineTo(canvas.width - margin - 10, canvas.height - margin + 5);
+  ctx.closePath();
+  ctx.fillStyle = axisColor;
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(margin, margin);
+  ctx.lineTo(margin - 5, margin + 10);
+  ctx.lineTo(margin + 5, margin + 10);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = axisColor;
   ctx.font = "14px Georgia";
   ctx.fillText("Masse (kg)", canvas.width - margin - 90, canvas.height - margin + 25);
   ctx.save();
@@ -162,7 +201,6 @@ function render() {
 }
 
 updateBtn.addEventListener("click", render);
-window.addEventListener("load", render);
 window.addEventListener("resize", render);
 
 exportBtn.addEventListener("click", () => {
@@ -294,3 +332,26 @@ function prefillExample() {
 }
 
 prefillBtn.addEventListener("click", prefillExample);
+
+function applyUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get("mode");
+  if (mode === "teacher") {
+    setMode("teacher");
+  } else {
+    setMode("student");
+  }
+
+  const prefill = params.get("prefill");
+  if (prefill) {
+    const n = Number(prefill);
+    if (Number.isFinite(n)) {
+      exampleCountSelect.value = String(Math.min(20, Math.max(2, n)));
+      prefillExample();
+      return;
+    }
+  }
+  render();
+}
+
+window.addEventListener("load", applyUrlParams);

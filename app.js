@@ -16,6 +16,7 @@ const tableWrapper = document.getElementById("tableWrapper");
 const nomInput = document.getElementById("nom");
 const prenomInput = document.getElementById("prenom");
 const classeInput = document.getElementById("classe");
+const incertitudeInput = document.getElementById("incertitude");
 const printNom = document.getElementById("printNom");
 const printPrenom = document.getElementById("printPrenom");
 const printClasse = document.getElementById("printClasse");
@@ -249,16 +250,17 @@ exportPdfBtn.addEventListener("click", () => {
     doc.text(`Nom : ${nomInput.value || "__________"}`, 15, 70);
     doc.text(`Prenom : ${prenomInput.value || "__________"}`, 15, 78);
     doc.text(`Classe : ${classeInput.value || "__________"}`, 15, 86);
+    doc.text(`Incertitude estimee : ${incertitudeInput.value || "__________"}`, 15, 94);
 
     doc.setFontSize(11);
-    doc.text("Objectif : verifier P = m * g et comparer la regression a la droite theorique.", 15, 100);
+    doc.text("Objectif : verifier P = m * g et comparer la regression a la droite theorique.", 15, 104);
 
     doc.setFont("helvetica", "bold");
     doc.text("Sommaire", 15, 112);
     doc.setFont("helvetica", "normal");
-    doc.text("1. Graphique et resultats .......................... p.2", 15, 120);
-    doc.text("2. Tableau des mesures .............................. p.2", 15, 126);
-    doc.text("3. Reponses et remarques ............................. p.2", 15, 132);
+    doc.text("1. Graphique et resultats .......................... p.2", 15, 124);
+    doc.text("2. Tableau des mesures .............................. p.2", 15, 130);
+    doc.text("3. Reponses et remarques ............................. p.2", 15, 136);
 
     doc.addPage();
 

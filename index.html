@@ -35,6 +35,10 @@
               Classe
               <input id="classe" type="text" placeholder="3e2" />
             </label>
+            <label>
+              Incertitude estimee (ex : ±0.05 N)
+              <input id="incertitude" type="text" placeholder="±0.05 N" />
+            </label>
           </div>
 
           <h2>Mesures</h2>
@@ -119,22 +123,27 @@
           <label>
             1. Que remarques-tu sur l'alignement des points ?
             <textarea id="qAlign" rows="3" placeholder="..."></textarea>
+            <small class="hint">Ex : points presque alignes, donc relation presque proportionnelle.</small>
           </label>
           <label>
             1bis. En maths, que signifie une droite qui passe par l'origine ?
             <textarea id="qOrigin" rows="3" placeholder="..."></textarea>
+            <small class="hint">Ex : la grandeur est proportionnelle, on peut ecrire y = kx.</small>
           </label>
           <label>
             2. Compare la pente de la regression a 9.81 N/kg.
             <textarea id="qCompare" rows="3" placeholder="..."></textarea>
+            <small class="hint">Ex : pente proche de 9.81, ecart faible.</small>
           </label>
           <label>
             3. La precision des mesures est-elle suffisante ? Justifie.
             <textarea id="qPrecision" rows="3" placeholder="..."></textarea>
+            <small class="hint">Ex : ecart de quelques pourcents, compatible avec les incertitudes.</small>
           </label>
           <label>
             Conclusion (proportionnalite P = m*g ?)
             <textarea id="qConclusion" rows="4" placeholder="..."></textarea>
+            <small class="hint">Ex : oui, car points alignes et b proche de 0.</small>
           </label>
         </div>
       </section>

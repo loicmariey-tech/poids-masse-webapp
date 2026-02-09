@@ -2,6 +2,7 @@ const updateBtn = document.getElementById("update");
 const exportBtn = document.getElementById("export");
 const exportPdfBtn = document.getElementById("exportPdf");
 const prefillBtn = document.getElementById("prefill");
+const exampleCountSelect = document.getElementById("exampleCount");
 const statusEl = document.getElementById("status");
 const regLineEl = document.getElementById("regLine");
 const relErrorEl = document.getElementById("relError");
@@ -172,7 +173,46 @@ exportBtn.addEventListener("click", () => {
 });
 
 exportPdfBtn.addEventListener("click", () => {
-  window.print();
+  try {
+    const { jsPDF } = window.jspdf || {};
+    if (!jsPDF) {
+      statusEl.textContent = "Export PDF indisponible (lib manquante).";
+      return;
+    }
+
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text("Compte-rendu eleve - Poids et masse (3e)", 15, 16);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.text(`Nom : ${nomInput.value || "__________"}`, 15, 26);
+    doc.text(`Prenom : ${prenomInput.value || "__________"}`, 15, 32);
+    doc.text(`Classe : ${classeInput.value || "__________"}`, 15, 38);
+
+    doc.text("Objectif : verifier P = m * g et comparer la regression a la droite theorique.", 15, 46);
+
+    const imgData = canvas.toDataURL("image/png");
+    doc.addImage(imgData, "PNG", 15, 55, 180, 95);
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Resultats", 15, 158);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Regression : ${regLineEl.textContent}`, 15, 166);
+    doc.text("Droite theorique : P = 9.81 m", 15, 172);
+    doc.text(`Ecart relatif (pente) : ${relErrorEl.textContent} %`, 15, 178);
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Conclusion", 15, 186);
+    doc.setFont("helvetica", "normal");
+    doc.text(".............................................................................", 15, 194);
+    doc.text(".............................................................................", 15, 200);
+
+    doc.save("poids-masse.pdf");
+  } catch (err) {
+    statusEl.textContent = "Erreur export PDF.";
+  }
 });
 
 function setMode(mode) {
@@ -232,25 +272,21 @@ classeInput.addEventListener("input", syncPrintHeader);
 syncPrintHeader();
 
 function prefillExample() {
-  nbMesuresInput.value = 15;
+  const count = Number(exampleCountSelect.value || 15);
+  nbMesuresInput.value = count;
   unitMasseSelect.value = "kg";
   unitPoidsSelect.value = "N";
   buildTable();
 
   const rows = Array.from(document.querySelectorAll(".measure-row"));
-  const masses = [
-    0.05, 0.08, 0.10, 0.12, 0.15,
-    0.18, 0.20, 0.22, 0.25, 0.28,
-    0.30, 0.33, 0.36, 0.40, 0.45
-  ];
-  const noise = [
-    0.00, 0.02, -0.01, 0.03, -0.02,
-    0.01, -0.01, 0.02, -0.02, 0.01,
-    0.00, -0.02, 0.03, -0.01, 0.02
-  ];
+  const start = 0.05;
+  const end = 0.45;
+  const step = (end - start) / (count - 1);
+
   rows.forEach((row, i) => {
-    const m = masses[i];
-    const p = 9.81 * m + noise[i];
+    const m = start + step * i;
+    const noise = (((i * 37) % 10) - 5) / 100; // -0.05 to +0.04
+    const p = 9.81 * m + noise;
     row.querySelector(".m-input").value = m.toFixed(3);
     row.querySelector(".p-input").value = p.toFixed(2);
   });

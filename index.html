@@ -68,7 +68,14 @@
             <button id="update">Mettre a jour</button>
             <button id="export">Exporter le graphe (PNG)</button>
             <button id="exportPdf">Exporter PDF</button>
-            <button id="prefill">Remplir exemple (15)</button>
+            <div class="inline">
+              <button id="prefill">Remplir exemple</button>
+              <select id="exampleCount" aria-label="Nombre de mesures exemple">
+                <option value="10">10</option>
+                <option value="15" selected>15</option>
+                <option value="20">20</option>
+              </select>
+            </div>
             <span id="status" aria-live="polite"></span>
           </div>
           <div class="results">
@@ -116,6 +123,7 @@
     </main>
 
     <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {

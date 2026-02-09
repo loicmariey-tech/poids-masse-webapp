@@ -8,10 +8,6 @@ const regLineEl = document.getElementById("regLine");
 const relErrorEl = document.getElementById("relError");
 const canvas = document.getElementById("chart");
 const ctx = canvas.getContext("2d");
-const modeStudentBtn = document.getElementById("modeStudent");
-const modeTeacherBtn = document.getElementById("modeTeacher");
-const studentOnly = document.querySelector(".student-only");
-const teacherOnly = document.querySelector(".teacher-only");
 const nbMesuresInput = document.getElementById("nbMesures");
 const unitMasseSelect = document.getElementById("unitMasse");
 const unitPoidsSelect = document.getElementById("unitPoids");
@@ -22,6 +18,9 @@ const classeInput = document.getElementById("classe");
 const printNom = document.getElementById("printNom");
 const printPrenom = document.getElementById("printPrenom");
 const printClasse = document.getElementById("printClasse");
+const qAlign = document.getElementById("qAlign");
+const qCompare = document.getElementById("qCompare");
+const qConclusion = document.getElementById("qConclusion");
 
 function parseTableData() {
   const rows = Array.from(document.querySelectorAll(".measure-row"));
@@ -241,11 +240,40 @@ exportPdfBtn.addEventListener("click", () => {
     doc.text("Droite theorique : P = 9.81 m", 15, 172);
     doc.text(`Ecart relatif (pente) : ${relErrorEl.textContent} %`, 15, 178);
 
+    // Table des mesures
+    const { m, p } = parseTableData();
+    const unitMasse = unitMasseSelect.value;
+    const unitPoids = unitPoidsSelect.value;
+    let y = 186;
     doc.setFont("helvetica", "bold");
-    doc.text("Conclusion", 15, 186);
+    doc.text("Tableau des mesures", 15, y);
+    y += 6;
     doc.setFont("helvetica", "normal");
-    doc.text(".............................................................................", 15, 194);
-    doc.text(".............................................................................", 15, 200);
+    doc.text(`Masse (${unitMasse}) / Poids (${unitPoids})`, 15, y);
+    y += 6;
+    const rows = m.map((mv, i) => `${i + 1}. ${mv} / ${p[i]}`);
+    rows.forEach((line) => {
+      if (y > 260) {
+        doc.addPage();
+        y = 20;
+      }
+      doc.text(line, 15, y);
+      y += 6;
+    });
+
+    if (y > 240) {
+      doc.addPage();
+      y = 20;
+    }
+    doc.setFont("helvetica", "bold");
+    doc.text("Reponses", 15, y);
+    y += 6;
+    doc.setFont("helvetica", "normal");
+    doc.text(`1. Alignement : ${qAlign.value || "-"}`, 15, y);
+    y += 6;
+    doc.text(`2. Comparaison : ${qCompare.value || "-"}`, 15, y);
+    y += 6;
+    doc.text(`Conclusion : ${qConclusion.value || "-"}`, 15, y);
 
     doc.save("poids-masse.pdf");
   } catch (err) {
@@ -266,9 +294,6 @@ function setMode(mode) {
     teacherOnly.classList.add("hidden");
   }
 }
-
-modeStudentBtn.addEventListener("click", () => setMode("student"));
-modeTeacherBtn.addEventListener("click", () => setMode("teacher"));
 
 function buildTable() {
   const count = Math.max(2, Math.min(20, Number(nbMesuresInput.value || 2)));
@@ -335,13 +360,6 @@ prefillBtn.addEventListener("click", prefillExample);
 
 function applyUrlParams() {
   const params = new URLSearchParams(window.location.search);
-  const mode = params.get("mode");
-  if (mode === "teacher") {
-    setMode("teacher");
-  } else {
-    setMode("student");
-  }
-
   const prefill = params.get("prefill");
   if (prefill) {
     const n = Number(prefill);

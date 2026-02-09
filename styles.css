@@ -86,6 +86,14 @@ body {
   font-size: 14px;
 }
 
+.grid textarea {
+  padding: 8px;
+  border: 1px solid var(--grid);
+  background: #fff;
+  font-size: 14px;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
 .measure-table {
   width: 100%;
   border-collapse: collapse;
@@ -177,7 +185,6 @@ button:hover {
 }
 
 @media print {
-  .mode-toggle,
   .actions,
   .legend,
   #status {

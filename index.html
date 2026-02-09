@@ -17,10 +17,6 @@
           Verifier la relation <strong>P = m x g</strong> et estimer la valeur de g a partir de
           mesures.
         </p>
-        <div class="mode-toggle" role="group" aria-label="Mode">
-          <button id="modeStudent" class="mode active">Mode eleve</button>
-          <button id="modeTeacher" class="mode">Mode prof</button>
-        </div>
       </header>
 
       <section class="panel">
@@ -103,7 +99,7 @@
         </div>
       </section>
 
-      <section class="panel info student-only">
+      <section class="panel info">
         <h2>Consigne eleve</h2>
         <ul>
           <li>Verifier que les unites sont correctes (kg et N).</li>
@@ -112,13 +108,22 @@
         </ul>
       </section>
 
-      <section class="panel info teacher-only hidden">
-        <h2>Mode prof</h2>
-        <ul>
-          <li>Attendus: regression lineaire, comparaison a 9.81 N/kg.</li>
-          <li>Expliquer le sens de la pente (g) et de l'ordonnee a l'origine (b).</li>
-          <li>Faire commenter l'ecart relatif sur la pente.</li>
-        </ul>
+      <section class="panel info">
+        <h2>Questions</h2>
+        <div class="grid">
+          <label>
+            1. Que remarques-tu sur l'alignement des points ?
+            <textarea id="qAlign" rows="3" placeholder="..."></textarea>
+          </label>
+          <label>
+            2. Compare la pente de la regression a 9.81 N/kg.
+            <textarea id="qCompare" rows="3" placeholder="..."></textarea>
+          </label>
+          <label>
+            Conclusion (proportionnalite P = m*g ?)
+            <textarea id="qConclusion" rows="4" placeholder="..."></textarea>
+          </label>
+        </div>
       </section>
     </main>
 

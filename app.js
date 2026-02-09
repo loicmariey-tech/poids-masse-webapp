@@ -3,6 +3,7 @@ const exportBtn = document.getElementById("export");
 const exportPdfBtn = document.getElementById("exportPdf");
 const prefillBtn = document.getElementById("prefill");
 const exampleCountSelect = document.getElementById("exampleCount");
+const resetCacheBtn = document.getElementById("resetCache");
 const statusEl = document.getElementById("status");
 const regLineEl = document.getElementById("regLine");
 const relErrorEl = document.getElementById("relError");
@@ -386,6 +387,30 @@ function prefillExample() {
 }
 
 prefillBtn.addEventListener("click", prefillExample);
+
+async function resetCache() {
+  statusEl.textContent = "";
+  try {
+    if ("serviceWorker" in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const reg of regs) {
+        await reg.unregister();
+      }
+    }
+    if ("caches" in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((key) => caches.delete(key)));
+    }
+    statusEl.textContent = "Cache reinitialise. Recharge en cours...";
+    setTimeout(() => {
+      window.location.reload(true);
+    }, 300);
+  } catch (err) {
+    statusEl.textContent = "Impossible de reinitialiser le cache.";
+  }
+}
+
+resetCacheBtn.addEventListener("click", resetCache);
 
 function applyUrlParams() {
   const params = new URLSearchParams(window.location.search);

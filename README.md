@@ -1,31 +1,26 @@
 # Poids et masse (3e)
 
-Webapp pedagogique pour tracer les points experimentaux, effectuer une regression lineaire, et comparer avec la droite theorique `P = m * g`.
+Webapp pedagogique pour exploiter des mesures de poids et masse en 3e : saisie des donnees, regression lineaire, comparaison a la valeur de g, et rapport PDF eleve.
 
-## Fonctionnalites
+## Ce que fait la webapp
 
-- Saisie **Nom / Prenom / Classe**.
+- Saisie **Nom / Prenom / Classe** + **incertitude estimee**.
 - Choix du **nombre de mesures**.
 - Saisie des valeurs de masse et de poids + **unites** (kg/g, N/mN).
 - Graphique avec points, regression lineaire et droite theorique.
 - Calcul de la pente et ecart relatif.
+- Section **Questions** avec aides activables.
+- Paragraphe historique + frise sur la mesure de g.
 - Export du graphe en PNG.
-- Export PDF direct (sans imprimer) incluant les infos eleve.
-- Mode **eleve / prof**.
-- Remplissage automatique d'un **jeu d'exemple** (10/15/20 mesures).
+- Export **rapport PDF** (couverture, graphique, resultats, tableau, reponses).
+- Option **tableau complet en annexe** (3e page).
+- Bouton **Reinitialiser cache** (utile avec GitHub Pages/PWA).
 - Mode PWA (installable sur smartphone).
 
 ## Guides
 
 - Eleve : `GUIDE_ELEVE.md`
 - Prof : `GUIDE_PROF.md`
-
-## Captures d'ecran
-
-Ajoutees dans `assets/screens/`.
-
-- Eleve : `assets/screens/student.png`
-- Prof : `assets/screens/teacher.png`
 
 ## Lancer en local
 
@@ -43,3 +38,9 @@ URL attendue : `https://loicmariey-tech.github.io/poids-masse-webapp/`
 
 - Masse en **kg** (ou g converti automatiquement)
 - Poids en **N** (ou mN converti automatiquement)
+
+## Conseils en cas de cache
+
+Si une ancienne version s affiche :
+- Ouvrir `https://loicmariey-tech.github.io/poids-masse-webapp/index.html?v=20260209`
+- Cliquer **Reinitialiser cache**

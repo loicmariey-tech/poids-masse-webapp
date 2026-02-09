@@ -83,6 +83,34 @@ body {
   color: #6d655a;
 }
 
+.timeline {
+  margin-top: 12px;
+  border-left: 3px solid var(--grid);
+  padding-left: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 10px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -18px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+}
+
+.timeline-content {
+  font-size: 14px;
+}
+
 .secondary {
   border: 2px solid var(--ink);
   background: transparent;

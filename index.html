@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Poids et masse (3e)</title>
+    <meta name="theme-color" content="#1f7a5d" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="assets/icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <h1>Poids et masse (3e)</h1>
+        <p>
+          Verifier la relation <strong>P = m x g</strong> et estimer la valeur de g a partir de
+          mesures.
+        </p>
+      </header>
+
+      <section class="panel">
+        <div class="inputs">
+          <h2>Donnees (m en kg, P en N)</h2>
+          <p>Une paire par ligne, format: <code>m,P</code></p>
+          <textarea id="data" rows="8">
+0,0
+0.100,1.0
+0.150,1.5
+0.180,2.0
+0.300,3.0
+0.350,3.5
+          </textarea>
+          <div class="actions">
+            <button id="update">Mettre a jour</button>
+            <button id="export">Exporter le graphe (PNG)</button>
+            <span id="status" aria-live="polite"></span>
+          </div>
+          <div class="results">
+            <div><strong>Regression:</strong> <span id="regLine">-</span></div>
+            <div><strong>g theorique:</strong> 9.81 N/kg</div>
+            <div><strong>Ecart relatif (pente):</strong> <span id="relError">-</span> %</div>
+          </div>
+          <div class="legend">
+            <div><span class="swatch swatch-reg"></span> Regression (vert pointille)</div>
+            <div><span class="swatch swatch-theo"></span> Droite theorique (bleu)</div>
+            <div><span class="swatch swatch-pts"></span> Points experimentaux (rouge)</div>
+          </div>
+        </div>
+        <div class="plot">
+          <canvas id="chart" width="900" height="520"></canvas>
+        </div>
+      </section>
+
+      <section class="panel info">
+        <h2>Consigne eleve</h2>
+        <ul>
+          <li>Verifier que les unites sont correctes (kg et N).</li>
+          <li>Observer l'alignement des points.</li>
+          <li>Comparer g mesure a 9.81 N/kg.</li>
+        </ul>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js");
+        });
+      }
+    </script>
+  </body>
+</html>

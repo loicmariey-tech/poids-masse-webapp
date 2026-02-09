@@ -190,6 +190,10 @@ button:hover {
     box-shadow: none;
     border: 1px solid #000;
   }
+
+  .print-only {
+    display: block !important;
+  }
 }
 
 .results {

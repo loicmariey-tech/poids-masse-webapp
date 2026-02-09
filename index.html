@@ -68,6 +68,7 @@
             <button id="update">Mettre a jour</button>
             <button id="export">Exporter le graphe (PNG)</button>
             <button id="exportPdf">Exporter PDF</button>
+            <button id="prefill">Remplir exemple (15)</button>
             <span id="status" aria-live="polite"></span>
           </div>
           <div class="results">
@@ -83,6 +84,15 @@
         </div>
         <div class="plot">
           <canvas id="chart" width="900" height="520"></canvas>
+        </div>
+      </section>
+
+      <section class="panel info print-only hidden" id="printHeader">
+        <h2>Fiche eleve</h2>
+        <div class="grid">
+          <div><strong>Nom :</strong> <span id="printNom">-</span></div>
+          <div><strong>Prenom :</strong> <span id="printPrenom">-</span></div>
+          <div><strong>Classe :</strong> <span id="printClasse">-</span></div>
         </div>
       </section>
 

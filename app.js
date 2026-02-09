@@ -1,6 +1,7 @@
 const updateBtn = document.getElementById("update");
 const exportBtn = document.getElementById("export");
 const exportPdfBtn = document.getElementById("exportPdf");
+const prefillBtn = document.getElementById("prefill");
 const statusEl = document.getElementById("status");
 const regLineEl = document.getElementById("regLine");
 const relErrorEl = document.getElementById("relError");
@@ -14,6 +15,12 @@ const nbMesuresInput = document.getElementById("nbMesures");
 const unitMasseSelect = document.getElementById("unitMasse");
 const unitPoidsSelect = document.getElementById("unitPoids");
 const tableWrapper = document.getElementById("tableWrapper");
+const nomInput = document.getElementById("nom");
+const prenomInput = document.getElementById("prenom");
+const classeInput = document.getElementById("classe");
+const printNom = document.getElementById("printNom");
+const printPrenom = document.getElementById("printPrenom");
+const printClasse = document.getElementById("printClasse");
 
 function parseTableData() {
   const rows = Array.from(document.querySelectorAll(".measure-row"));
@@ -212,3 +219,42 @@ unitMasseSelect.addEventListener("change", buildTable);
 unitPoidsSelect.addEventListener("change", buildTable);
 
 buildTable();
+
+function syncPrintHeader() {
+  printNom.textContent = nomInput.value || "-";
+  printPrenom.textContent = prenomInput.value || "-";
+  printClasse.textContent = classeInput.value || "-";
+}
+
+nomInput.addEventListener("input", syncPrintHeader);
+prenomInput.addEventListener("input", syncPrintHeader);
+classeInput.addEventListener("input", syncPrintHeader);
+syncPrintHeader();
+
+function prefillExample() {
+  nbMesuresInput.value = 15;
+  unitMasseSelect.value = "kg";
+  unitPoidsSelect.value = "N";
+  buildTable();
+
+  const rows = Array.from(document.querySelectorAll(".measure-row"));
+  const masses = [
+    0.05, 0.08, 0.10, 0.12, 0.15,
+    0.18, 0.20, 0.22, 0.25, 0.28,
+    0.30, 0.33, 0.36, 0.40, 0.45
+  ];
+  const noise = [
+    0.00, 0.02, -0.01, 0.03, -0.02,
+    0.01, -0.01, 0.02, -0.02, 0.01,
+    0.00, -0.02, 0.03, -0.01, 0.02
+  ];
+  rows.forEach((row, i) => {
+    const m = masses[i];
+    const p = 9.81 * m + noise[i];
+    row.querySelector(".m-input").value = m.toFixed(3);
+    row.querySelector(".p-input").value = p.toFixed(2);
+  });
+  render();
+}
+
+prefillBtn.addEventListener("click", prefillExample);
